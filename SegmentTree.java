@@ -1,5 +1,6 @@
 //concept
 //segment = rangeFunction(lo,hi) = rangeFuntion[lo,mid] + rangeFunction[mid+1, hi-1]
+//ref from cp-algorithm
 public class SegmentTree {
 
     int[] t;
@@ -10,7 +11,7 @@ public class SegmentTree {
         t = new int[N];
     }
 
-    // call with (0, 0, n-1) from main logn
+    // call with (array, 1, 0, n-1) from main logn
     public void build(int[] a, int v, int tl, int tr) {
         if (tl == tr)
             t[v] = a[tl];
@@ -23,16 +24,16 @@ public class SegmentTree {
     }
 
     // sum query logn
-    public int sum(int v, int tl, int tr, int l, int r) {
+    public int query(int v, int tl, int tr, int l, int r) {
         if (l > r)
             return 0;
         if (l == tl && r == tr)
             return t[l];
         int tm = tl + (tr - tl) / 2;
-        return sum(2 * v, tl, tm, l, Math.min(r, tm)) + sum(2 * v + 1, tm + 1, tr, Math.max(l, tm + 1), r);
+        return query(2 * v, tl, tm, l, Math.min(r, tm)) + query(2 * v + 1, tm + 1, tr, Math.max(l, tm + 1), r);
     }
 
-    // update qury logn
+    // point update query logn
     public void update(int v, int tl, int tr, int x, int val) {
         if (tl == tr)
             t[tl] = val;
